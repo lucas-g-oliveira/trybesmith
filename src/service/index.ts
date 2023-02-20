@@ -1,18 +1,10 @@
+import UserModel from '../models/UserModel';
 import connection from '../models/connection';
-import { IProduct } from '../interfaces';
-import ProductModel from '../models';
+import OrderModel from '../models/OrderModel';
+import ProductModel from '../models/ProductModel';
 
-class ProductService {
-  public model: ProductModel;
+const userModel = new UserModel(connection);
+const orderModel = new OrderModel(connection);
+const productModel = new ProductModel(connection);
 
-  constructor() {
-    this.model = new ProductModel(connection);
-  }
-
-  public async getAll(): Promise<IProduct[]> {
-    const products = await this.model.getAll();
-    return products;
-  }
-}
-
-export default ProductService;
+export { userModel, orderModel, productModel };

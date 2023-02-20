@@ -19,7 +19,7 @@ export default class Middlewares {
     next();
   }
   
-  public static addOrderValidate(req: Request, res: Response, next: NextFunction) {
+  public static addOrderValidate(req: Request, _res: Response, next: NextFunction) {
     Validations.useSchema(req, order);
     next();
   }

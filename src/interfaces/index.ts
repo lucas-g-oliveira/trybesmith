@@ -1,19 +1,11 @@
-export interface IProduct {
-  id?: number;
-  name: string;
-  amount: string;
-  orderId: number;
+import { OrdersType, ProductType, UserLoginType, UserType } from '../types';
+
+export interface IModelAddAndGetAll {
+  getAll(): Promise<ProductType[]> | Promise<OrdersType[]>;
+  add(data: ProductType | OrdersType): Promise<ProductType> | Promise<OrdersType>;
 }
 
-export interface IUser {
-  id?: number;
-  username: string;
-  vocation: string;
-  level: number;
-  password: string;
-}
-
-export interface IOrders {
-  id?: number;
-  userId: string;
+export interface IModelAddAndGetOne {
+  getOne(userloguin:UserLoginType):Promise<UserType>;
+  add(data:UserType):Promise<UserType>;
 }
