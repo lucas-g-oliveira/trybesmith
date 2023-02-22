@@ -10,7 +10,11 @@ export default class OrderModel implements IModelAddAndGetAll {
   }
 
   public async getAll(): Promise<OrdersType[]> {
-    const result = await this.connection.execute('SELECT * FROM Trybesmith.orders');
+    const qp1 = 'SELECT o.id AS id, o.user_id AS userId, json_arrayagg(p.id) ';
+    const qp2 = 'AS productsIds FROM Trybesmith.orders AS o LEFT JOIN Trybesmith.products AS p ';
+    const qp3 = 'ON o.id = p.order_id GROUP BY o.id;';
+
+    const result = await this.connection.execute(`${qp1}${qp2}${qp3}`);
     const [rows] = result;
     return rows as OrdersType[];
   }
