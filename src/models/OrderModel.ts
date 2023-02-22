@@ -27,5 +27,3 @@ export default class OrderModel implements IModelAddAndGetAll {
     return { id: insertId, ...order };
   }
 }
-
-//   {"productsIds": [1, 2] }

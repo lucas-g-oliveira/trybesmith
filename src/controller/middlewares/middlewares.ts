@@ -1,12 +1,16 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response, Errback } from 'express';
 import { addProduct as product, addUser as user, addOrder as order } from './schemas';
 import Validations from '../Validations';
 import statusCodes from '../statusCode';
 
 export default class Middlewares {
   public static tokenValidate(req: Request, _res: Response, next: NextFunction) {
-    Validations.token(req);
-    next();
+    try {
+      Validations.token(req);
+      next();
+    } catch (err) {
+      return err;
+    }
   }
   
   public static addProductValidate(req: Request, _res:Response, next: NextFunction) {
@@ -24,9 +28,9 @@ export default class Middlewares {
     next();
   }
   
-  public static errorMidllaware(_req: Request, res: Response, next: NextFunction, error:Error) {
+  public static errorMidllaware(error:Errback, _req: Request, res: Response, next: NextFunction) {
     if (error) {
-      const { message, code } = Middlewares.resErrorExpress(error.message);
+      const { message, code } = Middlewares.resErrorExpress(error.name);
       return res.status(code).json({ message });
     }
     next();
