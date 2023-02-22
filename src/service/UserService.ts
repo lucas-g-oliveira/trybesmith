@@ -1,11 +1,12 @@
+import connection from '../models/connection';
 import UserModel from '../models/UserModel';
 import { UserLoginType, UserType } from '../types';
 
 export default class UserService {
   private model:UserModel;
 
-  constructor(model:UserModel) {
-    this.model = model;
+  constructor() {
+    this.model = new UserModel(connection);
   }
 
   public async get(user:UserLoginType) {

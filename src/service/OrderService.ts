@@ -1,11 +1,12 @@
+import connection from '../models/connection';
 import OrderModel from '../models/OrderModel';
 import { OrdersType } from '../types';
 
 export default class OrderService {
   private model:OrderModel;
 
-  constructor(model:OrderModel) {
-    this.model = model;
+  constructor() {
+    this.model = new OrderModel(connection);
   }
 
   public async getAll() {

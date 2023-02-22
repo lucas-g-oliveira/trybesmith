@@ -7,7 +7,7 @@ export type ProductType = {
 
 export type UserLoginType = {
   password:string;
-  name:string;
+  username:string;
 };
 
 export type UserType = {

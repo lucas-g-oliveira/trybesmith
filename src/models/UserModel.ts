@@ -10,10 +10,10 @@ export default class UserModel implements IModelAddAndGetOne {
   }
 
   public async getOne(userlogin: UserLoginType): Promise<UserType> {
-    const { name, password } = userlogin;
+    const { username, password } = userlogin;
     const [result] = await this.connection.execute(
       'SELECT * FROM Trybesmith.users WHERE username = ? AND password = ?',
-      [name, password],
+      [username, password],
     );
     const [user] = result as UserType[];
     return user;

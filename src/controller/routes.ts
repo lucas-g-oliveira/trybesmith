@@ -1,5 +1,8 @@
 import express, { Request, Response } from 'express';
-import { productService, userService, orderService } from '../service';
+import ProductService from '../service/ProdutoService';
+import UserService from '../service/UserService';
+import OrderService from '../service/OrderService';
+
 // import Middlewares from './middlewares/middlewares';
 
 const route = express.Router();
@@ -10,8 +13,8 @@ route.post(
   // Middlewares.addProductValidate,
   // Middlewares.errorMidllaware,
   async (req: Request, res: Response) => {
-    const message = await productService.add(req.body);
-    return res.status(201).json({ message });
+    const message = await new ProductService().add(req.body);
+    return res.status(201).json(message.data);
   },
 );
 
@@ -20,8 +23,8 @@ route.get(
   // Middlewares.tokenValidate,
   // Middlewares.errorMidllaware,
   async (_req: Request, res: Response) => {
-    const message = await productService.getAll();
-    return res.status(200).json({ message });
+    const message = await new ProductService().getAll();
+    return res.status(200).json(message.data);
   },
 );
 
@@ -30,8 +33,9 @@ route.post(
   // Middlewares.addUserValidate,
   // Middlewares.errorMidllaware,
   async (req: Request, res: Response) => {
-    const message = await userService.add(req.body);
-    return res.status(200).json({ message });
+    console.log(req.body);
+    const message = await new UserService().add(req.body);
+    return res.status(201).json(message.data);
   },
 );
 
@@ -40,8 +44,9 @@ route.post(
   // Middlewares.tokenValidate,
   // Middlewares.errorMidllaware,
   async (req: Request, res: Response) => {
-    const message = await userService.getOne(req.body);
-    return res.status(200).json({ message });
+    const message = await new UserService().get(req.body);
+    console.log(message);
+    return res.status(200).json(message.data);
   },
 );
 
@@ -50,8 +55,8 @@ route.get(
   // Middlewares.tokenValidate,
   // Middlewares.errorMidllaware,
   async (_req: Request, res: Response) => {
-    const message = await orderService.getAll();
-    return res.status(200).json({ message });
+    const message = await new OrderService().getAll();
+    return res.status(200).json(message.data);
   },
 );
 
@@ -60,8 +65,8 @@ route.post(
   // Middlewares.tokenValidate,
   // Middlewares.errorMidllaware,
   async (req: Request, res: Response) => {
-    const message = await orderService.add(req.body.productsIds);
-    return res.status(200).json({ message });
+    const message = await new OrderService().add(req.body);
+    return res.status(200).json(message.data);
   },
 );
 

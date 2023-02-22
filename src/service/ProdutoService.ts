@@ -1,11 +1,12 @@
 import ProductModel from '../models/ProductModel';
 import { ProductType } from '../types';
+import connection from '../models/connection';
 
 export default class ProductService {
   private model:ProductModel;
 
-  constructor(model: ProductModel) {
-    this.model = model;
+  constructor() {
+    this.model = new ProductModel(connection);
   }
 
   public async getAll() {
