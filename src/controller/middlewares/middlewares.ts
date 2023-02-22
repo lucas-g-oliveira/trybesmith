@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Errback } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { addProduct as product, addUser as user, addOrder as order } from './schemas';
 import Validations from '../Validations';
 import statusCodes from '../statusCode';
@@ -28,9 +28,10 @@ export default class Middlewares {
     next();
   }
   
-  public static errorMidllaware(error:Errback, _req: Request, res: Response, next: NextFunction) {
+  public static errorMidllaware(error:Error, _req: Request, res: Response, next: NextFunction) {
     if (error) {
-      const { message, code } = Middlewares.resErrorExpress(error.name);
+      const { message, code } = Middlewares.resErrorExpress(error.message);
+      console.log(error);
       return res.status(code).json({ message });
     }
     next();

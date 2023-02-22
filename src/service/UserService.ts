@@ -1,3 +1,4 @@
+import JWTOKEN from '../JWTOKEN';
 import connection from '../models/connection';
 import UserModel from '../models/UserModel';
 import { UserLoginType, UserType } from '../types';
@@ -10,8 +11,9 @@ export default class UserService {
   }
 
   public async get(user:UserLoginType) {
-    const data = await this.model.getOne(user);
-    return { type: null, data };
+    await this.model.getOne(user);
+    const token = JWTOKEN.encript(user.username);
+    return { type: null, data: { token } };
   }
 
   public async add(user:UserType) {

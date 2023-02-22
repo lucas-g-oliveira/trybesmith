@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import ProductService from '../service/ProdutoService';
 import UserService from '../service/UserService';
 import OrderService from '../service/OrderService';
+import JWTOKEN from '../JWTOKEN';
 
 // import Middlewares from './middlewares/middlewares';
 
@@ -33,9 +34,12 @@ route.post(
   // Middlewares.addUserValidate,
   // Middlewares.errorMidllaware,
   async (req: Request, res: Response) => {
-    console.log(req.body);
     const message = await new UserService().add(req.body);
-    return res.status(201).json(message.data);
+    if (!message.type) { 
+      const token = JWTOKEN.encript(message.data.username);
+      return res.status(201).json({ token });
+    }
+    return res.status(400).json(message.type);
   },
 );
 
@@ -45,7 +49,6 @@ route.post(
   // Middlewares.errorMidllaware,
   async (req: Request, res: Response) => {
     const message = await new UserService().get(req.body);
-    console.log(message);
     return res.status(200).json(message.data);
   },
 );
