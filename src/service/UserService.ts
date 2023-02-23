@@ -11,8 +11,9 @@ export default class UserService {
   }
 
   public async get(user:UserLoginType) {
-    await this.model.getOne(user);
-    const token = JWTOKEN.encript(user.username);
+    const data = await this.model.getOne(user);
+    if (!data) return { type: 'NOT FOUND', data: 'Username or password invalid' };
+    const token = JWTOKEN.encript({ username: user.username, id: data.id });
     return { type: null, data: { token } };
   }
 

@@ -16,4 +16,9 @@ const addOrder = Joi.object().keys({
   productsIds: Joi.array().items(Joi.number().integer().min(1)).required(),
 });
 
-export { addUser, addProduct, addOrder };
+const login = Joi.object().keys({
+  username: Joi.string().min(3).required(),
+  password: Joi.string().min(8).required(),
+});
+
+export { addUser, addProduct, addOrder, login };

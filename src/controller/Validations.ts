@@ -5,7 +5,7 @@ import JWTOKEN from '../JWTOKEN';
 export default class Validations {
   public static useSchema(req:Request, schema:ObjectSchema) {
     const { error } = schema.validate(req.body);
-    if (error) throw new Error(error.message);
+    if (error) return new Error(error.message);
     return true;
   }
 

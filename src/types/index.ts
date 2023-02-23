@@ -20,5 +20,11 @@ export type UserType = {
 
 export type OrdersType = {
   id?: number | undefined;
-  userId: string;
+  userId: number | null;
+};
+
+export type AUTH = {
+  username: string;
+  id: number | null;
+  iat: number; 
 };

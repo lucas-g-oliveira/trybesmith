@@ -3,8 +3,7 @@ import ProductService from '../service/ProdutoService';
 import UserService from '../service/UserService';
 import OrderService from '../service/OrderService';
 import JWTOKEN from '../JWTOKEN';
-
-// import Middlewares from './middlewares/middlewares';
+import Middlewares from './middlewares/middlewares';
 
 const route = express.Router();
 
@@ -36,7 +35,10 @@ route.post(
   async (req: Request, res: Response) => {
     const message = await new UserService().add(req.body);
     if (!message.type) { 
-      const token = JWTOKEN.encript(message.data.username);
+      const token = JWTOKEN.encript({
+        username: message.data.username,
+        id: message.data.id,
+      });
       return res.status(201).json({ token });
     }
     return res.status(400).json(message.type);
@@ -45,11 +47,14 @@ route.post(
 
 route.post(
   '/login',
-  // Middlewares.tokenValidate,
+  Middlewares.loginArgumentsValidate,
   // Middlewares.errorMidllaware,
   async (req: Request, res: Response) => {
-    const message = await new UserService().get(req.body);
-    return res.status(200).json(message.data);
+    const { data, type } = await new UserService().get(req.body);
+    if (type) {
+      return res.status(401).json({ message: data });
+    }
+    return res.status(200).json(data);
   },
 );
 
@@ -68,7 +73,8 @@ route.post(
   // Middlewares.tokenValidate,
   // Middlewares.errorMidllaware,
   async (req: Request, res: Response) => {
-    const message = await new OrderService().add(req.body);
+    const { body, headers } = req;
+    const message = await new OrderService().add(body, headers.authorization as undefined);
     return res.status(200).json(message.data);
   },
 );
