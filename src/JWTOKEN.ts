@@ -17,12 +17,12 @@ export default class JWTOKEN {
   }
 
   public static decript(token:string | undefined):AUTH {
-    if (!token) return { iat: 0, id: null, username: 'invalido' };
+    if (!token) return { iat: 0, id: null, username: 'Token not found' };
     try {
       const data = jwt.verify(token, secret);
       return data as AUTH;
     } catch (err) {
-      return { iat: 0, id: null, username: 'invalido' };
+      return { iat: 0, id: null, username: 'Invalid token' };
     }
   }
 }

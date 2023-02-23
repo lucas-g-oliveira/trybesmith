@@ -4,9 +4,10 @@ import Validations from '../Validations';
 import statusCodes from '../statusCode';
 
 export default class Middlewares {
-  public static tokenValidate(req: Request, _res: Response, next: NextFunction) {
+  public static tokenValidate(req: Request, res: Response, next: NextFunction) {
     try {
-      Validations.token(req);
+      const data = Validations.token(req);
+      if (!data.id) return res.status(401).json({ message: data.username });
       next();
     } catch (err) {
       return err;
@@ -51,9 +52,17 @@ export default class Middlewares {
     }
   }
   
-  public static addOrderValidate(req: Request, _res: Response, next: NextFunction) {
-    Validations.useSchema(req, order);
-    next();
+  public static addOrderValidate(req: Request, res: Response, next: NextFunction) {
+    const keys = ['productsIds'/* , 'userId' */]
+      .filter((e) => !Object.keys(req.body).includes(e));
+    if (keys.length > 0) return res.status(400).json({ message: `"${keys[0]}" is required` });
+    const data = order(req.body);
+
+    if (data === 'ok') {
+      next();
+    } else {
+      return res.status(422).json({ message: data });
+    }
   }
 
   private static resErrorExpress(message: string) {

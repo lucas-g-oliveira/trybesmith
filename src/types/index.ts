@@ -23,6 +23,10 @@ export type OrdersType = {
   userId: number | null;
 };
 
+export type OrdersAddType = {
+  productsIds: number[] ;
+};
+
 export type AUTH = {
   username: string;
   id: number | null;

@@ -20,10 +20,11 @@ export default class OrderModel implements IModelAddAndGetAll {
   }
 
   public async add(order: OrdersType): Promise<OrdersType> {
-    const { userId, id } = order;
+    console.log(order);
+    const { userId } = order;
     const result = await this.connection.execute<ResultSetHeader>(
-      'INSERT INTO Trybesmith.orders(name, amount) VALUES (?, ?)',
-      [id, userId],
+      'INSERT INTO Trybesmith.orders(user_id) VALUES (?)',
+      [userId],
     );
 
     const [dataInserted] = result;

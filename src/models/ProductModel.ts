@@ -9,17 +9,15 @@ export default class ProductModel implements IModelAddAndGetAll {
     this.connection = connection;
   }
 
-  // getAll
   public async getAll(): Promise<ProductType[]> {
     const result = await this.connection.execute('SELECT * FROM Trybesmith.products');
     const [rows] = result;
     return rows as ProductType[];
   }
 
-  // getById
   public async getById(id:number):Promise<ProductType> {
     const [result] = await this.connection
-      .execute('SELECT * FROM trybesmith.producs WHERE id = ?', [id]);
+      .execute('SELECT * FROM Trybesmith.products WHERE id = ?', [id]);
     const [data] = result as ProductType[];
     return data as ProductType;
   }
@@ -41,7 +39,7 @@ export default class ProductModel implements IModelAddAndGetAll {
     const key = arr.join(', ');
     const char = arr.map(() => '?').join(', ');
     const result = await this.connection
-      .execute<ResultSetHeader>(`INSERT INTO Trybesmith.product (${key}) VALUES (${char})`, arr);
+      .execute<ResultSetHeader>(`INSERT INTO Trybesmith.products (${key}) VALUES (${char})`, arr);
 
     const [data] = result;
     return { ...product, id: data.insertId } as ProductType;
@@ -50,7 +48,7 @@ export default class ProductModel implements IModelAddAndGetAll {
   // set
   public async update(idOrder:number, idProduct:number):Promise<ProductType> {
     await this.connection.execute<ResultSetHeader>(
-      'UPDATE Trybesmith.products SET order_id WHERE id = ?',
+      'UPDATE Trybesmith.products SET order_id = ? WHERE id = ?',
       [idOrder, idProduct],
     );
     const devol = await this.getById(idProduct);
