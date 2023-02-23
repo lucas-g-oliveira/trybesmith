@@ -30,7 +30,7 @@ route.get(
 
 route.post(
   '/users',
-  // Middlewares.addUserValidate,
+  Middlewares.addUserValidate,
   // Middlewares.errorMidllaware,
   async (req: Request, res: Response) => {
     const message = await new UserService().add(req.body);

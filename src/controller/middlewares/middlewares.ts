@@ -29,7 +29,6 @@ export default class Middlewares {
     const { name, amount } = req.body;
     if (!name) return res.status(400).json({ message: '"name" is required' });
     if (!amount) return res.status(400).json({ message: '"amount" is required' });
-
     const data = product.validate(req.body);
     if (!data.error) {
       next();
@@ -38,24 +37,24 @@ export default class Middlewares {
     }
   }
   
-  public static addUserValidate(req: Request, _res: Response, next: NextFunction) {
-    Validations.useSchema(req, user);
-    next();
+  public static addUserValidate(req: Request, res: Response, next: NextFunction) {
+    const keys = ['username', 'password', 'level', 'vocation']
+      .filter((e) => !Object.keys(req.body).includes(e));
+
+    if (keys.length > 0) return res.status(400).json({ message: `"${keys[0]}" is required` });
+
+    const data = user.validate(req.body);
+    if (!data.error) {
+      next();
+    } else {
+      return res.status(422).json({ message: data.error.message });
+    }
   }
   
   public static addOrderValidate(req: Request, _res: Response, next: NextFunction) {
     Validations.useSchema(req, order);
     next();
   }
-  
-  /*   public static errorMidllaware(error:Error, _req: Request, res: Response, next: NextFunction) {
-    if (error.message) {
-      const { message, code } = Middlewares.resErrorExpress(error.message);
-      console.log(error);
-      return res.status(code).json({ message });
-    }
-    next();
-  } */
 
   private static resErrorExpress(message: string) {
     const result = (code: number, msg: string) => ({ message: msg, code });
