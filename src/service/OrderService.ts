@@ -23,7 +23,6 @@ export default class OrderService {
   public async add(order:OrdersAddType, authorization:undefined) {
     const { id, username } = JWTOKEN.decript(authorization);
     const orderSaved = await this.model.add({ userId: id });
-    console.log(orderSaved);
 
     if (orderSaved.id) {
       const updatedProducts = order.productsIds.map(async (e) => {

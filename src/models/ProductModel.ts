@@ -22,7 +22,6 @@ export default class ProductModel implements IModelAddAndGetAll {
     return data as ProductType;
   }
 
-  // add
   public async add(product: ProductType): Promise<ProductType> {
     const { name, amount } = product;
     const [dataInserted] = await this.connection.execute<ResultSetHeader>(
@@ -33,7 +32,6 @@ export default class ProductModel implements IModelAddAndGetAll {
     return { id: insertId, ...product };
   }
 
-  // addPlus
   public async addWithOrderId(product:ProductType):Promise<ProductType> {
     const arr = Object.keys(product);
     const key = arr.join(', ');
@@ -45,7 +43,6 @@ export default class ProductModel implements IModelAddAndGetAll {
     return { ...product, id: data.insertId } as ProductType;
   }
 
-  // set
   public async update(idOrder:number, idProduct:number):Promise<ProductType> {
     await this.connection.execute<ResultSetHeader>(
       'UPDATE Trybesmith.products SET order_id = ? WHERE id = ?',

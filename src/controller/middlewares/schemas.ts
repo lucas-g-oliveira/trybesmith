@@ -14,7 +14,6 @@ const addUser = Joi.object().keys({
 });
 
 const addOrder = (obj:OrdersAddType) => {
-  console.log(obj.productsIds);
   if (!Array.isArray(obj.productsIds)) return '"productsIds" must be an array';
   if (obj.productsIds.length < 1) return '"productsIds" must include only numbers';
   if (obj.productsIds.some((e) => !Number.isInteger(e))) {

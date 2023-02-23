@@ -18,7 +18,6 @@ route.post(
 
 route.get(
   '/products',
-  Middlewares.tokenValidate,
   async (_req: Request, res: Response) => {
     const message = await new ProductService().getAll();
     return res.status(200).json(message.data);
