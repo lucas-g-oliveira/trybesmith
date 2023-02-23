@@ -10,7 +10,7 @@ const route = express.Router();
 route.post(
   '/products',
   // Middlewares.tokenValidate,
-  // Middlewares.addProductValidate,
+  Middlewares.addProductValidate,
   // Middlewares.errorMidllaware,
   async (req: Request, res: Response) => {
     const message = await new ProductService().add(req.body);
@@ -20,7 +20,7 @@ route.post(
 
 route.get(
   '/products',
-  // Middlewares.tokenValidate,
+  Middlewares.tokenValidate,
   // Middlewares.errorMidllaware,
   async (_req: Request, res: Response) => {
     const message = await new ProductService().getAll();
